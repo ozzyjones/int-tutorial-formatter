@@ -29,11 +29,22 @@ export class TutorialFormatter {
      * @param input all text to process
      */
     private _capitalizeFirstWordInComment(input: string): string {
-        const re = /\/\/\s[a-z]/g;
-        input.match(re).forEach((lowercaseCommentStart) => {
-            const lowerLetter = lowercaseCommentStart.charAt(3);
-            input = input.replace(lowercaseCommentStart, '// ' + lowerLetter.toUpperCase());
-        });
+        const regex = /\/\/\s[a-z]/g;
+        let m;
+
+        while ((m = regex.exec(input)) !== null) {
+            // This is necessary to avoid infinite loops with zero-width matches
+            if (m.index === regex.lastIndex) {
+                regex.lastIndex++;
+            }
+            
+            // The result can be accessed through the `m`-variable.
+            m.forEach((match, groupIndex) => {
+                let lowercaseCommentStart = match;
+                const lowerLetter = lowercaseCommentStart.charAt(3);
+                input = input.replace(lowercaseCommentStart, '// ' + lowerLetter.toUpperCase());
+            });
+        }
         return input;
     }
 }

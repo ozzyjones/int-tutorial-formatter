@@ -6,6 +6,12 @@ export class TutorialFormatter {
      * @returns {string} reformatted tutorial text
      */
     public format(input: string): string {
-        return input;
+        let output;
+        output = this._putSpacesAfterCommentInitializations(input);
+        return output;
+    }
+
+    private _putSpacesAfterCommentInitializations(input: string): string {
+        return input.replace(/\/\/(?=[^\s])/g, '// ');
     }
 }

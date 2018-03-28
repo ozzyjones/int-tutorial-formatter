@@ -14,7 +14,7 @@ export class TutorialFormatter {
 
     /**
      * Put spaces after comment initializations
-     * 
+     *
      * @example "//abc" => "// abc"
      * @param input all text to process
      */
@@ -24,12 +24,12 @@ export class TutorialFormatter {
 
     /**
      * Capitalize the first word in every javascript comment
-     * 
+     *
      * @example "// abc" => "// Abc"
      * @param input all text to process
      */
     private _capitalizeFirstWordInComment(input: string): string {
-        const re = /\/\/\s[a-z]/g
+        const re = /\/\/\s[a-z]/g;
         input.match(re).forEach((lowercaseCommentStart) => {
             const lowerLetter = lowercaseCommentStart.charAt(3);
             input = input.replace(lowercaseCommentStart, '// ' + lowerLetter.toUpperCase());

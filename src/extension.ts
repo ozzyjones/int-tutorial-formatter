@@ -18,10 +18,23 @@ export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('extension.formatTutorials', () => {
         // The code you place here will be executed every time your command is executed
 
-        if(vscode.window.activeTextEditor !== undefined){
+        let activeEditor = vscode.window.activeTextEditor;
+        if(activeEditor !== undefined){
+            let document = activeEditor.document;
             let formatter = new TutorialFormatter();
-            let text = vscode.window.activeTextEditor.document.getText();
+            let text = activeEditor.document.getText();
             let reformatted = formatter.format(text);
+            
+            // Replace all text in the active editor with the reformatted text
+            activeEditor.edit((builder) => {
+                builder.replace(
+                    new vscode.Range(
+                        document.positionAt(0), 
+                        document.positionAt(text.length)
+                    ),
+                    reformatted
+                );
+            });
 
             vscode.debug.activeDebugConsole.appendLine('Reformatted Tutorial:');
             vscode.debug.activeDebugConsole.appendLine(reformatted);

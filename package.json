@@ -2,7 +2,7 @@
     "name": "int-tutorials",
     "displayName": "int-tutorials",
     "description": "General formatting for INT tutorials",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "Brian",
     "engines": {
         "vscode": "^1.21.0"

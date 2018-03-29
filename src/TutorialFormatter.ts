@@ -68,11 +68,11 @@ export class TutorialFormatter {
                 if (groupIndex === 2) {
                     const uglyCodeSnippet = match;
                     const prettyCodeSnippet = beautify(uglyCodeSnippet, {
-                        "wrap_line_length": 100,
-                        "break_chained_methods": true,
-                        "jslint_happy": true
+                        break_chained_methods: true,
+                        jslint_happy: true,
+                        wrap_line_length: 100
                     });
-                    input = input.replace(uglyCodeSnippet, prettyCodeSnippet);
+                    input = input.replace(uglyCodeSnippet, prettyCodeSnippet.trim());
                 }
             });
 

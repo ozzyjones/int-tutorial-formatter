@@ -127,10 +127,11 @@ export class TutorialFormatter {
                 regex.lastIndex++;
             }
 
-            let codeLeftPadding = m[1].length;  // Number of characters on the line before the code block
+            // let codeLeftPadding = m[1].length;  // Number of characters on the line before the code block
             let divLeftPadding = m[2]           // Number of characters on the line before the div element
             .replace('\n','')
             .replace('\r','').length;
+            let codeLeftPadding = divLeftPadding + 4;   // 4 spaces indented from the closing div
 
             // Example:
             // });</code></pre></div>

@@ -67,7 +67,11 @@ export class TutorialFormatter {
                 // Capture the code snippet, exclusively
                 if (groupIndex === 2) {
                     const uglyCodeSnippet = match;
-                    const prettyCodeSnippet = beautify(uglyCodeSnippet);
+                    const prettyCodeSnippet = beautify(uglyCodeSnippet, {
+                        "wrap_line_length": 100,
+                        "break_chained_methods": true,
+                        "jslint_happy": true
+                    });
                     input = input.replace(uglyCodeSnippet, prettyCodeSnippet);
                 }
             });

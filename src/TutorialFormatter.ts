@@ -55,7 +55,7 @@ export class TutorialFormatter {
 
     /**
      * Beautify all JS snippets via the NPM package "js-beautify"
-     * 
+     *
      * @param input all text to process
      */
     private _beautifyJavascript(input: string): string {
@@ -73,12 +73,13 @@ export class TutorialFormatter {
                 // Capture the code snippet, exclusively
                 if (groupIndex === 2) {
                     const uglyCodeSnippet = match;
-                    const prettyCodeSnippet = beautify(uglyCodeSnippet, {
+                    let prettyCodeSnippet = beautify(uglyCodeSnippet, {
                         break_chained_methods: true,
                         jslint_happy: true,
                         wrap_line_length: 100
                     });
-                    input = input.replace(uglyCodeSnippet, prettyCodeSnippet.trim());
+                    prettyCodeSnippet = this._makeThreeDotLinesIntoComments(prettyCodeSnippet.trim());
+                    input = input.replace(uglyCodeSnippet, prettyCodeSnippet);
                 }
             });
 
@@ -90,13 +91,33 @@ export class TutorialFormatter {
     /**
      * Add HTML code collapse snippets below every code block
      * (Note: The JS definitions 'tutorialpagelogic' and 'jquery' still need to be added)
-     * 
+     *
      * @param input all text to process
      */
     private _addCodeCollapseSnippets(input: string): string {
         input = this._makeCodeBlocksCollapsible(input);
         input = this._addSeeMoreLessCode(input);
         return input;
+    }
+
+    /**
+     * Convert ellipses ('...') into comments ('// ...') if they are
+     * on a line by themselves
+     *
+     * @param codeSnippet Javascript code snippet
+     */
+    private _makeThreeDotLinesIntoComments(codeSnippet: string): string {
+        const re = /^\s*\.{3}\s*$/;
+        const lines = codeSnippet.split('\n');
+        const editedLines = lines.slice(0);
+        for (let index = 0; index < lines.length; index++) {
+            const editLine = editedLines[index];
+            if (editLine.match(re) !== null) {
+                editedLines[index] = editLine.replace('...', '// ...');
+            }
+        }
+
+        return editedLines.join('\n');
     }
 
     private _makeCodeBlocksCollapsible(input: string): string {
@@ -128,10 +149,10 @@ export class TutorialFormatter {
             }
 
             // let codeLeftPadding = m[1].length;  // Number of characters on the line before the code block
-            let divLeftPadding = m[2]           // Number of characters on the line before the div element
-            .replace('\n','')
-            .replace('\r','').length;
-            let codeLeftPadding = divLeftPadding + 4;   // 4 spaces indented from the closing div
+            const divLeftPadding = m[2]           // Number of characters on the line before the div element
+            .replace('\n', '')
+            .replace('\r', '').length;
+            const codeLeftPadding = divLeftPadding + 4;   // 4 spaces indented from the closing div
 
             // Example:
             // });</code></pre></div>
@@ -139,9 +160,9 @@ export class TutorialFormatter {
             // ___<div ...See Less...></div>
             // </div>
 
-            let snippet = m[1] + '</code></pre></div>\n' + 
-            ' '.repeat(codeLeftPadding) + '<div class="see-more-container" onclick="togglecode(event)"><a>See More Code...</a></div>\n' + 
-            ' '.repeat(codeLeftPadding) + '<div class="see-less-container hidden" onclick="togglecode(event)"><a>See Less Code...</a></div>\n' + 
+            const snippet = m[1] + '</code></pre></div>\n' +
+            ' '.repeat(codeLeftPadding) + '<div class="see-more-container" onclick="togglecode(event)"><a>See More Code...</a></div>\n' +
+            ' '.repeat(codeLeftPadding) + '<div class="see-less-container hidden" onclick="togglecode(event)"><a>See Less Code...</a></div>\n' +
             ' '.repeat(divLeftPadding) + '</div>';
 
             input = input.replace(m[0], snippet);

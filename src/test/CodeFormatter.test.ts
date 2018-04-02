@@ -1,10 +1,10 @@
-import { TutorialFormatter } from '../TutorialFormatter';
+import { CodeFormatter } from '../CodeFormatter';
 import { expect } from 'chai';
 import 'mocha';
 
-const formatter = new TutorialFormatter();
+const formatter = new CodeFormatter();
 
-describe('Tutorial Formatter', () => {
+describe('Code Formatter', () => {
 
     it('space after comment', () => {
         expect(formatter.format('//ABC')).to.equal('// ABC');
@@ -24,9 +24,5 @@ describe('Tutorial Formatter', () => {
 
     it('capitalize first letter in comment: "ABC"', () => {
         expect(formatter.format('//ABC')).to.equal('// ABC');
-    });
-
-    it('rename reference links', () => {
-        expect(formatter.format('<li><a href="#References">Reference List</a></li>')).to.equal('<li><a href="#References">References</a></li>');
     });
 });

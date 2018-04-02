@@ -12,6 +12,7 @@ export class TutorialFormatter {
         output = this._capitalizeFirstWordInComment(output);
         output = this._beautifyJavascript(output);
         output = this._addCodeCollapseSnippets(output);
+        output = this._renameReferencesLink(output);
         return output;
     }
 
@@ -168,6 +169,24 @@ export class TutorialFormatter {
             input = input.replace(m[0], snippet);
 
             m = regex.exec(input);
+        }
+        return input;
+    }
+
+    /**
+     * Rename references link if it is not named 'References'
+     * 
+     * @param input all text to process
+     */
+    private _renameReferencesLink(input: string): string {
+        const regex = /<li>\s*<a\s+.*?href="#References">(.*)<\/a><\/li>/;
+        let m = input.match(regex);
+        if(m !== null){
+            const link = m[0];
+            const linkName = m[1];
+            if(linkName !== 'References'){
+                input = input.replace(link, '<li><a href="#References">References</a></li>')
+            }
         }
         return input;
     }

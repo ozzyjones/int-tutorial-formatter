@@ -25,4 +25,8 @@ describe('Tutorial Formatter', () => {
     it('capitalize first letter in comment: "ABC"', () => {
         expect(formatter.format('//ABC')).to.equal('// ABC');
     });
+
+    it('rename reference links', () => {
+        expect(formatter.format('<li><a href="#References">Reference List</a></li>')).to.equal('<li><a href="#References">References</a></li>');
+    });
 });

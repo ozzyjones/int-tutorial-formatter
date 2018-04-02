@@ -1,4 +1,5 @@
 
+import htmlparser = require('htmlparser2');
 import { CodeFormatter } from './CodeFormatter';
 
 export class TutorialFormatter {
@@ -29,26 +30,31 @@ export class TutorialFormatter {
      * @returns {string[]} Array of code snippets
      */
     private _getCodeSnippets(input: string): string[] {
-        const regex = /<code\s.*?class=(["'])javascript\1.*?>([^<]*)<\/code>/g;
         const snippets = [];
-        let m = regex.exec(input);
 
-        while (m !== null) {
-            // This is necessary to avoid infinite loops with zero-width matches
-            if (m.index === regex.lastIndex) {
-                regex.lastIndex++;
-            }
-
-            // The result can be accessed through the `m`-variable.
-            m.forEach((match, groupIndex) => {
-                // Capture the code snippet, exclusively
-                if (groupIndex === 2) {
-                    snippets.push(match);
+        let code = '';
+        let isInOpenTag = false;
+        const parser = new htmlparser.Parser({
+            onclosetag: (tagname) => {
+                if (tagname === 'code' && isInOpenTag) {
+                    isInOpenTag = false;
+                    snippets.push(code);
+                    code = '';
                 }
-            });
-
-            m = regex.exec(input);
-        }
+            },
+            onopentag: (tagname, attribs) => {
+                if (tagname === 'code' && attribs.class === 'javascript') {
+                    isInOpenTag = true;
+                }
+            },
+            ontext: (text) => {
+                if (isInOpenTag) {
+                    code += (text !== undefined) ? text : '';
+                }
+            }
+        }, {decodeEntities: true});
+        parser.write(input);
+        parser.end();
 
         return snippets;
     }

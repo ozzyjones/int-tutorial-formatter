@@ -1,4 +1,5 @@
 
+import htmlEntities = require('html-entities');
 import beautify = require('js-beautify');
 
 export class CodeFormatter {
@@ -8,11 +9,28 @@ export class CodeFormatter {
      * @returns {string} reformatted tutorial text
      */
     public format(codeSnippet: string): string {
+        const Entities = require('html-entities').AllHtmlEntities;
+        const entities = new Entities();
+        codeSnippet = entities.decode(codeSnippet);
         codeSnippet = this._putSpacesAfterCommentInitializations(codeSnippet);
         codeSnippet = this._capitalizeFirstWordInComment(codeSnippet);
         codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._beautifyJavascript(codeSnippet);
+        codeSnippet = this._encode(codeSnippet);
         return codeSnippet;
+    }
+
+    /**
+     * Encode HTML Symbols
+     *
+     * @description Only encode '<' and '>' symbols
+     * @param {string} decoded non-encoded HTML
+     */
+    private _encode(decoded: string): string {
+        let encoded = decoded;
+        encoded = encoded.replace(/</g, '&lt;');
+        encoded = encoded.replace(/>/g, '&gt;');
+        return encoded;
     }
 
     /**

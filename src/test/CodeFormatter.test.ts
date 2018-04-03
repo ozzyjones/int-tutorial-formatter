@@ -25,4 +25,12 @@ describe('Code Formatter', () => {
     it('capitalize first letter in comment: "ABC"', () => {
         expect(formatter.format('//ABC')).to.equal('// ABC');
     });
+
+    it('encode "<"', () => {
+        expect(formatter.format('if (a < 0)')).to.equal('if (a &lt; 0)');
+    });
+
+    it('encode ">"', () => {
+        expect(formatter.format('if (a > 0)')).to.equal('if (a &gt; 0)');
+    });
 });

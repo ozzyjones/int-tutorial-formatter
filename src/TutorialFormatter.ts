@@ -52,7 +52,7 @@ export class TutorialFormatter {
                     code += (text !== undefined) ? text : '';
                 }
             }
-        }, {decodeEntities: true});
+        }, {decodeEntities: false});
         parser.write(input);
         parser.end();
 

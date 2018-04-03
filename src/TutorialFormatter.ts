@@ -12,6 +12,7 @@ export class TutorialFormatter {
     public format(input: string): string {
         let output;
         output = this._titleCaseHeading(input);
+        output = this._titleCaseSubHeadings(output);
         output = this._addCodeCollapseSnippets(output);
         output = this._renameReferencesLink(output);
 
@@ -37,6 +38,42 @@ export class TutorialFormatter {
             const title = titlecase(m[1]);
             input = input.replace(m[0], `<h2>${title}</h2>`);
         }
+        return input;
+    }
+
+    /**
+     * Title case the table of contents
+     *
+     * @param input all text to process
+     */
+    private _titleCaseSubHeadings(input: string): string {
+        const tocRegex = /<li><a\s+href="#([^"]+)">([^<]+)<\/a><\/li>/g;
+        let tocMatches = tocRegex.exec(input); // Table of Contents
+
+        while (tocMatches !== null) {
+            if (tocMatches.index === tocRegex.lastIndex) {
+                tocRegex.lastIndex++;
+            }
+
+            const id = tocMatches[1];
+            const title = titlecase(tocMatches[2]);
+            input = input.replace(tocMatches[0], `<li><a href="#${id}">${title}</a></li>`);
+            tocMatches = tocRegex.exec(input);
+        }
+
+        const subheaderRegex = /<h3><a\s+id="([^"]+)">([^<]+)<\/a><\/h3>/g;
+        let subheaderMatches = subheaderRegex.exec(input);
+        while (subheaderMatches !== null) {
+            if (subheaderMatches.index === subheaderRegex.lastIndex) {
+                subheaderRegex.lastIndex++;
+            }
+
+            const id = subheaderMatches[1];
+            const title = titlecase(subheaderMatches[2]);
+            input = input.replace(subheaderMatches[0], `<h3><a id="${id}">${title}</a></h3>`);
+            subheaderMatches = subheaderRegex.exec(input);
+        }
+
         return input;
     }
 

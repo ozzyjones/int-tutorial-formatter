@@ -1,5 +1,6 @@
 
 import htmlparser = require('htmlparser2');
+import titlecase = require('titlecase');
 import { CodeFormatter } from './CodeFormatter';
 
 export class TutorialFormatter {
@@ -10,7 +11,8 @@ export class TutorialFormatter {
      */
     public format(input: string): string {
         let output;
-        output = this._addCodeCollapseSnippets(input);
+        output = this._titleCaseHeading(input);
+        output = this._addCodeCollapseSnippets(output);
         output = this._renameReferencesLink(output);
 
         const codeFormatter = new CodeFormatter();
@@ -21,6 +23,21 @@ export class TutorialFormatter {
         });
 
         return output;
+    }
+
+    /**
+     * Title case the main header (h2) on the page
+     *
+     * @example "Real-time Demo" => "Real-Time Demo"
+     * @param input all text to process
+     */
+    private _titleCaseHeading(input: string): string {
+        const m = input.match(/<h2>([^<]+)<\/h2>/);
+        if (m !== null) {
+            const title = titlecase(m[1]);
+            input = input.replace(m[0], `<h2>${title}</h2>`);
+        }
+        return input;
     }
 
     /**

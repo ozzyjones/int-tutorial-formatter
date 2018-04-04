@@ -57,25 +57,20 @@ export class CodeFormatter {
      * @param input all text to process
      */
     private _capitalizeFirstWordInComment(input: string): string {
-        const regex = /\/\/\s[a-z]/g;
-        let m = regex.exec(input);
-
-        while (m !== null) {
-            // This is necessary to avoid infinite loops with zero-width matches
-            if (m.index === regex.lastIndex) {
-                regex.lastIndex++;
+        const Linter = require('eslint').Linter;
+        const linter = new Linter();
+        const messages = linter.verifyAndFix(input, {
+            rules: {
+                'capitalized-comments': [
+                    'error', 
+                    'always',
+                    {
+                        ignoreConsecutiveComments: true
+                    }
+                ]
             }
-
-            // The result can be accessed through the `m`-variable.
-            m.forEach((match, groupIndex) => {
-                const lowercaseCommentStart = match;
-                const lowerLetter = lowercaseCommentStart.charAt(3);
-                input = input.replace(lowercaseCommentStart, '// ' + lowerLetter.toUpperCase());
-            });
-
-            m = regex.exec(input);
-        }
-        return input;
+        });
+        return messages.output;
     }
 
     /**

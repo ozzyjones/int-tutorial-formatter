@@ -12,10 +12,9 @@ export class CodeFormatter {
         const Entities = require('html-entities').AllHtmlEntities;
         const entities = new Entities();
         codeSnippet = entities.decode(codeSnippet);
-        codeSnippet = this._putSpacesAfterCommentInitializations(codeSnippet);
-        codeSnippet = this._capitalizeFirstWordInComment(codeSnippet);
         codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._beautifyJavascript(codeSnippet);
+        codeSnippet = this._eslint(codeSnippet);
         codeSnippet = this._encode(codeSnippet);
         return codeSnippet;
     }
@@ -34,46 +33,6 @@ export class CodeFormatter {
     }
 
     /**
-     * Put spaces after comment initializations
-     *
-     * @example "//abc" => "// abc"
-     * @param input all text to process
-     */
-    private _putSpacesAfterCommentInitializations(input: string): string {
-        const Linter = require('eslint').Linter;
-        const linter = new Linter();
-        const messages = linter.verifyAndFix(input, {
-            'rules': {
-                'spaced-comment': 1
-            }
-        });
-        return messages.output;
-    }
-
-    /**
-     * Capitalize the first word in every javascript comment
-     *
-     * @example "// abc" => "// Abc"
-     * @param input all text to process
-     */
-    private _capitalizeFirstWordInComment(input: string): string {
-        const Linter = require('eslint').Linter;
-        const linter = new Linter();
-        const messages = linter.verifyAndFix(input, {
-            'rules': {
-                'capitalized-comments': [
-                    'error',
-                    'always',
-                    {
-                        'ignoreConsecutiveComments': true
-                    }
-                ]
-            }
-        });
-        return messages.output;
-    }
-
-    /**
      * Beautify all JS snippets via the NPM package "js-beautify"
      *
      * @param input all text to process
@@ -86,6 +45,64 @@ export class CodeFormatter {
             'wrap_line_length': 110
         });
         return prettyCodeSnippet;
+    }
+
+    /**
+     * ESLint Code Snippet
+     *
+     * @param input Javascript code snippet
+     */
+    private _eslint(input: string): string {
+        const Linter = require('eslint').Linter;
+        const linter = new Linter();
+
+        // Code-Base Rules
+        const codeBaseRules = linter.verifyAndFix(input, {
+            'rules': {
+                'brace-style': [2, '1tbs', { 'allowSingleLine': false }],
+                'comma-dangle': [2, 'never'],
+                'comma-spacing': [2, {'before': false, 'after': true}],
+                'dot-location': [2, 'property'],
+                'eqeqeq': [2, 'smart'],
+                'indent': [2, 4, {'SwitchCase': 1}],
+                'key-spacing': [2, {'beforeColon': false, 'afterColon': true}],
+                'no-else-return': 2,
+                'no-extra-semi': 2,
+                'operator-linebreak': [2, 'after'],
+                'semi-spacing': [2, {'before': false, 'after': true}],
+                'space-before-function-paren': [2, {
+                    'anonymous': 'always',
+                    'asyncArrow': 'always',
+                    'named': 'always'
+                }],
+                'space-infix-ops': [2, {'int32Hint': false}],
+                'spaced-comment': 1,
+                'yoda': [2, 'never', { 'exceptRange': true }]
+            }
+        });
+
+        // Custom Rules for Tutorials
+        const tutorialRules = linter.verifyAndFix(codeBaseRules.output, {
+            'rules': {
+                'capitalized-comments': [
+                    'error',
+                    'always',
+                    {
+                        'ignoreConsecutiveComments': true
+                    }
+                ],
+                'curly': 'error',
+                'func-call-spacing': ['error', 'never'],
+                'no-floating-decimal': 'error',
+                'no-lonely-if': 'error',
+                'no-multi-spaces': ['error', {'ignoreEOLComments': true}],
+                'no-multiple-empty-lines': ['error', {'max': 1}],
+                'no-trailing-spaces': ['error', {'ignoreComments': true}],
+                'quote-props': ['error', 'consistent'],
+                'quotes': ['error', 'single']
+            }
+        });
+        return tutorialRules.output;
     }
 
     /**

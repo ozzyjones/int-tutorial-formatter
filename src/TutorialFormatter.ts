@@ -89,24 +89,24 @@ export class TutorialFormatter {
         let code = '';
         let isInOpenTag = false;
         const parser = new htmlparser.Parser({
-            onclosetag: (tagname) => {
+            'onclosetag': (tagname) => {
                 if (tagname === 'code' && isInOpenTag) {
                     isInOpenTag = false;
                     snippets.push(code);
                     code = '';
                 }
             },
-            onopentag: (tagname, attribs) => {
+            'onopentag': (tagname, attribs) => {
                 if (tagname === 'code' && attribs.class === 'javascript') {
                     isInOpenTag = true;
                 }
             },
-            ontext: (text) => {
+            'ontext': (text) => {
                 if (isInOpenTag) {
                     code += (text !== undefined) ? text : '';
                 }
             }
-        }, {decodeEntities: false});
+        }, {'decodeEntities': false});
         parser.write(input);
         parser.end();
 

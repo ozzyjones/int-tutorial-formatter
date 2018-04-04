@@ -43,7 +43,7 @@ export class CodeFormatter {
         const Linter = require('eslint').Linter;
         const linter = new Linter();
         const messages = linter.verifyAndFix(input, {
-            rules: {
+            'rules': {
                 'spaced-comment': 1
             }
         });
@@ -60,12 +60,12 @@ export class CodeFormatter {
         const Linter = require('eslint').Linter;
         const linter = new Linter();
         const messages = linter.verifyAndFix(input, {
-            rules: {
+            'rules': {
                 'capitalized-comments': [
-                    'error', 
+                    'error',
                     'always',
                     {
-                        ignoreConsecutiveComments: true
+                        'ignoreConsecutiveComments': true
                     }
                 ]
             }
@@ -81,9 +81,9 @@ export class CodeFormatter {
      */
     private _beautifyJavascript(uglyCodeSnippet: string): string {
         const prettyCodeSnippet = beautify(uglyCodeSnippet, {
-            break_chained_methods: true,
-            jslint_happy: true,
-            wrap_line_length: 110
+            'break_chained_methods': true,
+            'jslint_happy': true,
+            'wrap_line_length': 110
         });
         return prettyCodeSnippet;
     }

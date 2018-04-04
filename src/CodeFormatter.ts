@@ -81,7 +81,7 @@ export class CodeFormatter {
         const prettyCodeSnippet = beautify(uglyCodeSnippet, {
             break_chained_methods: true,
             jslint_happy: true,
-            wrap_line_length: 100
+            wrap_line_length: 110
         });
         return prettyCodeSnippet;
     }

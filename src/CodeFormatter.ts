@@ -40,7 +40,14 @@ export class CodeFormatter {
      * @param input all text to process
      */
     private _putSpacesAfterCommentInitializations(input: string): string {
-        return input.replace(/\/\/(?=[^\s])/g, '// ');
+        const Linter = require('eslint').Linter;
+        const linter = new Linter();
+        const messages = linter.verifyAndFix(input, {
+            rules: {
+                'spaced-comment': 1
+            }
+        });
+        return messages.output;
     }
 
     /**

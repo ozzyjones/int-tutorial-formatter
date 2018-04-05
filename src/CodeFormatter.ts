@@ -40,7 +40,7 @@ export class CodeFormatter {
      */
     private _beautifyJavascript(uglyCodeSnippet: string): string {
         const prettyCodeSnippet = beautify(uglyCodeSnippet, {
-            'break_chained_methods': true,
+            // 'break_chained_methods': true,
             'jslint_happy': true,
             'wrap_line_length': 110
         });
@@ -95,6 +95,7 @@ export class CodeFormatter {
                 ],
                 'curly': ['error', 'multi-line'],
                 'func-call-spacing': ['error', 'never'],
+                'newline-per-chained-call': ['error', {'ignoreChainWithDepth': 2}],
                 'no-floating-decimal': 'error',
                 'no-lonely-if': 'error',
                 'no-multi-spaces': ['error', {'ignoreEOLComments': true}],

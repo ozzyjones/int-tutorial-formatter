@@ -145,7 +145,7 @@ export class TutorialFormatter {
 
     private _addSeeMoreLessCode(input: string): string {
         // Matching this regex means that the "Show/Hide More Code..." snippets must be added
-        const regex = /([^\n]*)<\/code>\s*<\/pre>\s*<\/div>(\s*)<\/div>/g;
+        const regex = /<code class="javascript">([^>]*)<\/code>\s*<\/pre>\s*<\/div>(\s*)<\/div>/g;
         let m = regex.exec(input);
 
         while (m !== null) {

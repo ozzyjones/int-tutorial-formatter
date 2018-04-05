@@ -23,4 +23,16 @@ describe('Tutorial Formatter', () => {
         const after = '<h3><a id="Depth based realtime">Depth-Based Real-Time</a></h3>';
         expect(formatter.format(before)).to.equal(after);
     });
+
+    it('collapsed javascript code block', () => {
+        const before = '<div class="code"><pre><code class="javascript">npm install jsonschema</code></pre></div>';
+        const after = '<div class="code collapsed"><pre><code class="javascript">npm install jsonschema</code></pre></div>';
+        expect(formatter.format(before)).to.equal(after);
+    });
+
+    it('do not make non-javascript code block collapsible', () => {
+        const before = '<div class="code"><pre><code>npm install jsonschema</code></pre></div>';
+        const after = '<div class="code"><pre><code>npm install jsonschema</code></pre></div>';
+        expect(formatter.format(before)).to.equal(after);
+    });
 });

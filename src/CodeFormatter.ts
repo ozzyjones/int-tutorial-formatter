@@ -93,7 +93,7 @@ export class CodeFormatter {
                         'ignorePattern': '[\\w]+\\(\\)'     // Ignore method calls (e.g. "// validate()")
                     }
                 ],
-                'curly': 'error',
+                'curly': ['error', 'multi-line'],
                 'func-call-spacing': ['error', 'never'],
                 'no-floating-decimal': 'error',
                 'no-lonely-if': 'error',
@@ -104,6 +104,7 @@ export class CodeFormatter {
                 'quotes': ['error', 'single']
             }
         });
+
         if (tutorialRules.messages.length > 0) {
             throw new ESLintMessagesError(
                 'ESLint Error',

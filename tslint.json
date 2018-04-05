@@ -7,7 +7,8 @@
     "rules": {
         "object-literal-key-quotes": [true, "always"],
         "quotemark": [true, "single"],
-        "trailing-comma": [true, {"objects": "never"}]
+        "trailing-comma": [true, {"objects": "never"}],
+        "variable-name": [true, "check-format", "allow-leading-underscore"]
     },
     "rulesDirectory": []
 }

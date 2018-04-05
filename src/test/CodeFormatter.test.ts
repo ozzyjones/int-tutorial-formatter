@@ -27,10 +27,10 @@ describe('Code Formatter', () => {
     });
 
     it('encode "<"', () => {
-        expect(formatter.format('if (a < 0)')).to.equal('if (a &lt; 0)');
+        expect(formatter.format('var a = (b < 0);')).to.equal('var a = (b &lt; 0);');
     });
 
     it('encode ">"', () => {
-        expect(formatter.format('if (a > 0)')).to.equal('if (a &gt; 0)');
+        expect(formatter.format('var a = (b > 0);')).to.equal('var a = (b &gt; 0);');
     });
 });

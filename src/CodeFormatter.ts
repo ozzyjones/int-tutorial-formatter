@@ -1,6 +1,7 @@
 
 import htmlEntities = require('html-entities');
 import beautify = require('js-beautify');
+import { ESLintMessagesError } from './ESLintMessagesError';
 
 export class CodeFormatter {
 
@@ -9,8 +10,7 @@ export class CodeFormatter {
      * @returns {string} reformatted tutorial text
      */
     public format(codeSnippet: string): string {
-        const Entities = require('html-entities').AllHtmlEntities;
-        const entities = new Entities();
+        const entities = new htmlEntities.AllHtmlEntities();
         codeSnippet = entities.decode(codeSnippet);
         codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._beautifyJavascript(codeSnippet);
@@ -51,6 +51,7 @@ export class CodeFormatter {
      * ESLint Code Snippet
      *
      * @param input Javascript code snippet
+     * @throws {ESLintMessagesError}
      */
     private _eslint(input: string): string {
         const Linter = require('eslint').Linter;
@@ -102,6 +103,12 @@ export class CodeFormatter {
                 'quotes': ['error', 'single']
             }
         });
+        if (tutorialRules.messages.length > 0) {
+            throw new ESLintMessagesError(
+                'ESLint Error',
+                tutorialRules.messages);
+        }
+
         return tutorialRules.output;
     }
 

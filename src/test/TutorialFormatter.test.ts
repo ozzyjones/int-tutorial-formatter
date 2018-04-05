@@ -25,8 +25,8 @@ describe('Tutorial Formatter', () => {
     });
 
     it('collapsed javascript code block', () => {
-        const before = '<div class="code"><pre><code class="javascript">npm install jsonschema</code></pre></div>';
-        const after = '<div class="code collapsed"><pre><code class="javascript">npm install jsonschema</code></pre></div>';
+        const before = '<div class="code"><pre><code class="javascript">var a = 0;</code></pre></div>';
+        const after = '<div class="code collapsed"><pre><code class="javascript">var a = 0;</code></pre></div>';
         expect(formatter.format(before)).to.equal(after);
     });
 

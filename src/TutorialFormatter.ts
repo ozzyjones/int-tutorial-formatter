@@ -8,6 +8,7 @@ export class TutorialFormatter {
     /**
      * Format Tutorial Text
      * @returns {string} reformatted tutorial text
+     * @throws {ESLintMessagesError}
      */
     public format(input: string): string {
         let output;
@@ -19,7 +20,12 @@ export class TutorialFormatter {
         const codeFormatter = new CodeFormatter();
         const snippets = this._getCodeSnippets(output);
         snippets.forEach((uglyCodeSnippet) => {
-            const prettyCodeSnippet = codeFormatter.format(uglyCodeSnippet);
+            let prettyCodeSnippet;
+            try {
+                prettyCodeSnippet = codeFormatter.format(uglyCodeSnippet);
+            } catch (error) {
+                throw error;
+            }
             output = output.replace(uglyCodeSnippet, prettyCodeSnippet);
         });
 

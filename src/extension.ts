@@ -24,7 +24,19 @@ export function activate(context: vscode.ExtensionContext) {
             const document = activeEditor.document;
             const formatter = new TutorialFormatter();
             const text = activeEditor.document.getText();
-            const reformatted = formatter.format(text);
+
+            let reformatted;
+            try {
+                reformatted = formatter.format(text);
+            } catch (error) {
+                error.getLintMessages().forEach((lintErr) => {
+                    vscode.window.showErrorMessage(
+                        `${error.message} - "${lintErr.message}" => ` +
+                        `${lintErr.line}: "${lintErr.source}"`
+                    );
+                });
+                return;
+            }
 
             // Replace all text in the active editor with the reformatted text
             activeEditor.edit((builder) => {

@@ -6,7 +6,7 @@
     "jsRules": {},
     "rules": {
         "object-literal-key-quotes": [true, "always"],
-        "quotemark": [true, "single"],
+        "quotemark": [true, "single", "avoid-escape"],
         "trailing-comma": [true, {"objects": "never"}],
         "variable-name": [true, "check-format", "allow-leading-underscore"]
     },

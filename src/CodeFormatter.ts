@@ -14,7 +14,13 @@ export class CodeFormatter {
         codeSnippet = entities.decode(codeSnippet);
         codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._beautifyJavascript(codeSnippet);
+
+        // Replace all '...' so that ESLint can parse correctly (reverse later)
+        const ELLIP_PLACEHOLDER = "'&hellip;'";
+        codeSnippet = codeSnippet.replace(/\.{3}/g, ELLIP_PLACEHOLDER);
         codeSnippet = this._eslint(codeSnippet);
+        codeSnippet = codeSnippet.replace(new RegExp(ELLIP_PLACEHOLDER, 'g'), '...');
+
         codeSnippet = this._encode(codeSnippet);
         return codeSnippet;
     }

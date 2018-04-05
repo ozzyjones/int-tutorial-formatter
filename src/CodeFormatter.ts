@@ -89,7 +89,8 @@ export class CodeFormatter {
                     'error',
                     'always',
                     {
-                        'ignoreConsecutiveComments': true
+                        'ignoreConsecutiveComments': true,
+                        'ignorePattern': '[\\w]+\\(\\)'     // Ignore method calls (e.g. "// validate()")
                     }
                 ],
                 'curly': 'error',

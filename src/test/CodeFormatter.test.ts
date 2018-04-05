@@ -33,4 +33,9 @@ describe('Code Formatter', () => {
     it('encode ">"', () => {
         expect(formatter.format('var a = (b > 0);')).to.equal('var a = (b &gt; 0);');
     });
+
+    it('no caps comments starting with method calls', () => {
+        let s = '// validate()';
+        expect(formatter.format(s)).to.equal(s);
+    });
 });

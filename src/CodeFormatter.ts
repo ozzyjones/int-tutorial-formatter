@@ -91,6 +91,9 @@ export class CodeFormatter {
         // Custom Rules for Tutorials
         const tutorialRules = linter.verifyAndFix(codeBaseRules.output, {
             'rules': {
+                'array-bracket-newline': ['error', 'consistent'],
+                'array-bracket-spacing': ['error', 'never'],
+                'array-element-newline': ['error', {'multiline': true}],
                 'capitalized-comments': [
                     'error',
                     'always',

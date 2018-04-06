@@ -13,12 +13,15 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.debug.activeDebugConsole.appendLine('Formatting INT Tutorials - Extension Active');
     vscode.debug.activeDebugConsole.appendLine('');
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('extension.formatTutorials', () => {
-        // The code you place here will be executed every time your command is executed
+    const formatCodeDisposable = vscode.commands.registerCommand('extension.formatCode', () => {
+        formatTutorial('code');     // Code Only
+    });
 
+    const formatTutorialsDisposable = vscode.commands.registerCommand('extension.formatTutorials', () => {
+        formatTutorial('all');      // Code and all other attributes
+    });
+
+    function formatTutorial(option: string): void {
         const activeEditor = vscode.window.activeTextEditor;
         if (activeEditor !== undefined) {
             const document = activeEditor.document;
@@ -27,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 
             let reformatted;
             try {
-                reformatted = formatter.format(text);
+                reformatted = formatter.format(text, option);
             } catch (error) {
                 error.getLintMessages().forEach((lintErr) => {
                     vscode.window.showErrorMessage(
@@ -56,7 +59,8 @@ export function activate(context: vscode.ExtensionContext) {
         } else {
             vscode.window.showErrorMessage('The tutorial must be open in an active editor');
         }
-    });
+    }
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(formatTutorialsDisposable);
+    context.subscriptions.push(formatCodeDisposable);
 }

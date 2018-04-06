@@ -10,12 +10,16 @@ export class TutorialFormatter {
      * @returns {string} reformatted tutorial text
      * @throws {ESLintMessagesError}
      */
-    public format(input: string): string {
-        let output;
-        output = this._titleCaseHeading(input);
-        output = this._titleCaseSubHeadings(output);
-        output = this._addCodeCollapseSnippets(output);
-        output = this._renameReferencesLink(output);
+    public format(input: string, option = 'all'): string {
+        let output = input.slice();
+
+        // Only apply these changes in the format option === 'all'
+        if (option === 'all') {
+            output = this._titleCaseHeading(output);
+            output = this._titleCaseSubHeadings(output);
+            output = this._addCodeCollapseSnippets(output);
+            output = this._renameReferencesLink(output);
+        }
 
         const codeFormatter = new CodeFormatter();
         const snippets = this._getCodeSnippets(output);

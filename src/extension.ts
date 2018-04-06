@@ -28,9 +28,13 @@ export function activate(context: vscode.ExtensionContext) {
             const formatter = new TutorialFormatter();
             const text = activeEditor.document.getText();
 
-            let reformatted;
+            let previousReformatting;
+            let latestReformatting = text.slice();
             try {
-                reformatted = formatter.format(text, option);
+                do {
+                    previousReformatting = latestReformatting.slice();
+                    latestReformatting = formatter.format(previousReformatting, option);
+                }while (previousReformatting !== latestReformatting);
             } catch (error) {
                 error.getLintMessages().forEach((lintErr) => {
                     const msg =
@@ -51,12 +55,12 @@ export function activate(context: vscode.ExtensionContext) {
                         document.positionAt(0),
                         document.positionAt(text.length)
                     ),
-                    reformatted
+                    latestReformatting
                 );
             });
 
             vscode.debug.activeDebugConsole.appendLine('Reformatted Tutorial:');
-            vscode.debug.activeDebugConsole.appendLine(reformatted);
+            vscode.debug.activeDebugConsole.appendLine(latestReformatting);
 
             vscode.window.showInformationMessage('Reformatted Tutorial');
         } else {

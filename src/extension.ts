@@ -33,10 +33,13 @@ export function activate(context: vscode.ExtensionContext) {
                 reformatted = formatter.format(text, option);
             } catch (error) {
                 error.getLintMessages().forEach((lintErr) => {
-                    vscode.window.showErrorMessage(
-                        `${error.message} - "${lintErr.message}" => ` +
-                        `${lintErr.line}: "${lintErr.source}"`
-                    );
+                    const msg =
+                    `${error.message} - "${lintErr.message}" => ` +
+                    `${lintErr.line}: "${lintErr.source}"`;
+
+                    vscode.window.showErrorMessage(msg);
+                    vscode.debug.activeDebugConsole.appendLine(msg);
+                    vscode.debug.activeDebugConsole.appendLine(error.getCodeSnippet());
                 });
                 return;
             }

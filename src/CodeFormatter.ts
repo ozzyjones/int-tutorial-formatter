@@ -56,15 +56,15 @@ export class CodeFormatter {
     /**
      * ESLint Code Snippet
      *
-     * @param input Javascript code snippet
+     * @param codeSnippet Javascript code snippet
      * @throws {ESLintMessagesError}
      */
-    private _eslint(input: string): string {
+    private _eslint(codeSnippet: string): string {
         const Linter = require('eslint').Linter;
         const linter = new Linter();
 
         // Code-Base Rules
-        const codeBaseRules = linter.verifyAndFix(input, {
+        const codeBaseRules = linter.verifyAndFix(codeSnippet, {
             'rules': {
                 'brace-style': [2, '1tbs', { 'allowSingleLine': false }],
                 'comma-dangle': [2, 'never'],
@@ -115,7 +115,9 @@ export class CodeFormatter {
         if (tutorialRules.messages.length > 0) {
             throw new ESLintMessagesError(
                 'ESLint Error',
-                tutorialRules.messages);
+                tutorialRules.messages,
+                codeSnippet
+            );
         }
 
         return tutorialRules.output;

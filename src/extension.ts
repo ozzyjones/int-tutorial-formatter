@@ -43,7 +43,12 @@ export function activate(context: vscode.ExtensionContext) {
 
                     vscode.window.showErrorMessage(msg);
                     vscode.debug.activeDebugConsole.appendLine(msg);
-                    vscode.debug.activeDebugConsole.appendLine(error.getCodeSnippet());
+
+                    const NUM_STR_LEN = 4;
+                    error.getCodeSnippet().split('\n').forEach((codeLine, index) => {
+                        vscode.debug.activeDebugConsole.appendLine(
+                            `${(index + 1).toString().padStart(NUM_STR_LEN, ' ')} : ${codeLine}`);
+                    });
                 });
                 return;
             }

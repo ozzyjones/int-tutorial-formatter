@@ -38,4 +38,27 @@ describe('Code Formatter', () => {
         let s = '// validate()';
         expect(formatter.format(s)).to.equal(s);
     });
+
+    it('ellipsis into comment', () => {
+        expect(formatter.format('...')).to.equal('// ...');
+    });
+
+    it('ellipsis into comment', () => {
+        expect(formatter.format('...')).to.equal('// ...');
+    });
+
+    it('ellipsis as parameter', () => {
+        let s = 'doSomething(...);';
+        expect(formatter.format(s)).to.equal(s);
+    });
+
+    it('ellipsis in object parameter', () => {
+        const s = 'doSomething({...});';
+        expect(formatter.format(s)).to.equal(s);
+    });
+
+    it('ellipsis inside quoted string', () => {
+        let s = "doSomething('...')";
+        expect(formatter.format(s)).to.equal(s);
+    });
 });

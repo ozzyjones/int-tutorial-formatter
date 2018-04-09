@@ -15,11 +15,23 @@ export class CodeFormatter {
         codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._beautifyJavascript(codeSnippet);
 
-        // Replace all '...' so that ESLint can parse correctly (reverse later)
-        const ELLIP_PLACEHOLDER = "'&hellip;'";
-        codeSnippet = codeSnippet.replace(/\.{3}/g, ELLIP_PLACEHOLDER);
+        // Replace function params '...' so that ESLint can parse correctly (reverse later)
+        const HELLIP = "'&hellip;'";
+        const HELLIP_OBJ = `{${HELLIP}: ${HELLIP}}`;
+        const ELLIP_PARAM_REGEX = /\(([{\s]*)\.{3}([}\s]*)\)/g;   // ( ... )
+        codeSnippet = codeSnippet.replace(ELLIP_PARAM_REGEX, (match, predots, postdots) => {
+            const pre = predots.trim();
+            const post = postdots.trim();
+
+            // ({...}) => ({'&hellip;': '&hellip;'})        <= Must be valid JS
+            // (...)   => ('&hellip;')
+            const contents = (pre === '{' && post === '}') ? `${HELLIP}: ${HELLIP}` : HELLIP;
+            const p = '(' + pre + contents + post + ')';
+            return p;
+        });
         codeSnippet = this._eslint(codeSnippet);
-        codeSnippet = codeSnippet.replace(new RegExp(ELLIP_PLACEHOLDER, 'g'), '...');
+        codeSnippet = codeSnippet.replace(new RegExp(HELLIP_OBJ, 'g'), '{...}');
+        codeSnippet = codeSnippet.replace(new RegExp(HELLIP, 'g'), '...');
 
         codeSnippet = this._encode(codeSnippet);
         return codeSnippet;

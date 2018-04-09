@@ -104,7 +104,7 @@ export class CodeFormatter {
                 ],
                 'curly': ['error', 'multi-line'],
                 'func-call-spacing': ['error', 'never'],
-                'newline-per-chained-call': ['error', {'ignoreChainWithDepth': 2}],
+                'newline-per-chained-call': ['error', {'ignoreChainWithDepth': 1}],
                 'no-floating-decimal': 'error',
                 'no-lonely-if': 'error',
                 'no-multi-spaces': ['error', {'ignoreEOLComments': true}],

@@ -45,9 +45,12 @@ export function activate(context: vscode.ExtensionContext) {
                     vscode.debug.activeDebugConsole.appendLine(msg);
 
                     const NUM_STR_LEN = 4;
+                    const HIGHLIGHTER = '>>';   // Points to error
                     error.getCodeSnippet().split('\n').forEach((codeLine, index) => {
+                        const lineNum = index + 1;
+                        const highlight = (lineNum === lintErr.line) ? HIGHLIGHTER : ' '.repeat(HIGHLIGHTER.length);
                         vscode.debug.activeDebugConsole.appendLine(
-                            `${(index + 1).toString().padStart(NUM_STR_LEN, ' ')} : ${codeLine}`);
+                            `${highlight}${lineNum.toString().padStart(NUM_STR_LEN, ' ')} : ${codeLine}`);
                     });
                 });
                 return;

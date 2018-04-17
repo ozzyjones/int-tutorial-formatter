@@ -29,6 +29,8 @@ export class CodeFormatter {
             const p = '(' + pre + contents + post + ')';
             return p;
         });
+        const ELLIP_PARAM_REGEX_CURLY = /({[\s]*)\.{3}([\s]*})/g;   // { ... }
+        codeSnippet = codeSnippet.replace(ELLIP_PARAM_REGEX_CURLY, `{${HELLIP}: ${HELLIP}}`);
         codeSnippet = this._eslint(codeSnippet);
         codeSnippet = codeSnippet.replace(new RegExp(HELLIP_OBJ, 'g'), '{...}');
         codeSnippet = codeSnippet.replace(new RegExp(HELLIP, 'g'), '...');

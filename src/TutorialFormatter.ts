@@ -5,12 +5,15 @@ import { CodeFormatter } from './CodeFormatter';
 
 export class TutorialFormatter {
 
+    private _warnings: string[];
+
     /**
      * Format Tutorial Text
      * @returns {string} reformatted tutorial text
      * @throws {ESLintMessagesError}
      */
     public format(input: string, option = 'all'): string {
+        this._clearWarnings();
         let output = input.slice();
 
         // Only apply these changes in the format option === 'all'
@@ -25,6 +28,21 @@ export class TutorialFormatter {
         output = this._editCodeSnippets(output);
 
         return output;
+    }
+
+    /**
+     * Get warnings raised by the tutorial formatting
+     * @returns {string[]} warnings
+     */
+    public getWarnings(): string[] {
+        return this._warnings;
+    }
+
+    /**
+     * Clear warnings raised by the tutorial formatting
+     */
+    private _clearWarnings() {
+        this._warnings = [];
     }
 
     /**
@@ -72,7 +90,12 @@ export class TutorialFormatter {
     private _editCodeSnippets(input: string): string {
         const codeFormatter = new CodeFormatter();
         const $ = cheerio.load(input, {'decodeEntities': false});
-        $('div>pre>code.javascript').each(function(index) {
+        const codeSelector = 'div>pre>code.javascript';
+        if ($(codeSelector).length === 0) {
+            this._warnings.push(
+                `No code snippets found; verify that the following selector has matches: ${codeSelector}`);
+        }
+        $(codeSelector).each(function(index) {
             let prettyCodeSnippet;
             const uglyCodeSnippet = $(this).text();
             try {

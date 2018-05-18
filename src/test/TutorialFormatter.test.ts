@@ -46,4 +46,10 @@ describe('Tutorial Formatter', () => {
         const after =  '<html><head></head><body><li><a href="References">References</a></li></body></html>';
         expect(formatter.format(before)).to.equal(after);
     });
+
+    it('no code snippets warning', () => {
+        const html = '<html></html>';
+        formatter.format(html);
+        expect(formatter.getWarnings().length).to.equal(1);
+    });
 });

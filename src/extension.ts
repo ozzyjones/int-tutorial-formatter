@@ -71,6 +71,11 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.debug.activeDebugConsole.appendLine(latestReformatting);
 
             vscode.window.showInformationMessage('Reformatted Tutorial');
+
+            // Check for any warnings
+            formatter.getWarnings().forEach((warning) => {
+                vscode.window.showWarningMessage(warning);
+            });
         } else {
             vscode.window.showErrorMessage('The tutorial must be open in an active editor');
         }

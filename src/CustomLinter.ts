@@ -73,9 +73,9 @@ export class CustomLinter {
         // Custom Rules for Tutorials
         const tutorialRules = linter.verifyAndFix(codeBaseRules.output, {
             'rules': {
-                'array-bracket-newline': ['error', 'consistent'],
-                'array-bracket-spacing': ['error', 'never'],
-                'array-element-newline': ['error', {'multiline': true}],
+                // 'array-bracket-newline': ['error', 'consistent'],
+                // 'array-bracket-spacing': ['error', 'never'],
+                // 'array-element-newline': ['error', {'multiline': true}],
                 'capitalized-comments': [
                     'error',
                     'always',
@@ -84,7 +84,7 @@ export class CustomLinter {
                         'ignorePattern': '[\\w]+\\(\\)'     // Ignore method calls (e.g. "// validate()")
                     }
                 ],
-                'curly': ['error', 'multi-line'],
+                // 'curly': ['error', 'multi-line'],
                 'func-call-spacing': ['error', 'never'],
                 'newline-per-chained-call': ['error', {'ignoreChainWithDepth': 1}],
                 'no-floating-decimal': 'error',

@@ -17,11 +17,6 @@ export class CustomLinter {
     private HELLIP_OBJ = `{${this.HELLIP}: ${this.HELLIP}}`;
 
     /**
-     * A regex to capture ellipsis parameters - e.g. doSomething( ... )
-     */
-    private ELLIP_PARAM_REGEX = /\(([{\s]*)\.{3}([}\s]*)\)/g;
-
-    /**
      * ESLint verify and fix code snippet
      * @throws {ESLintMessagesError}
      */
@@ -119,7 +114,13 @@ export class CustomLinter {
      */
     private _preformat(codeSnippet): string {
 
-        codeSnippet = codeSnippet.replace(this.ELLIP_PARAM_REGEX, (match, predots, postdots) => {
+        // A regex to replace function(){...}
+        const ELLIP_FUNC_REGEX = /function\s*\([^\(]*\)\s*{\s*\.{3}\s*}/g;
+        codeSnippet = codeSnippet.replace(ELLIP_FUNC_REGEX, `function(){${this.HELLIP}}`);
+
+        // A regex to capture ellipsis parameters - e.g. doSomething( ... )
+        const ELLIP_PARAM_REGEX = /\(([{\s]*)\.{3}([}\s]*)\)/g;
+        codeSnippet = codeSnippet.replace(ELLIP_PARAM_REGEX, (match, predots, postdots) => {
             const pre = predots.trim();
             const post = postdots.trim();
 

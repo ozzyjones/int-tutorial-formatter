@@ -16,6 +16,7 @@ export class CodeFormatter {
         codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._beautifyJavascript(codeSnippet);
         codeSnippet = this._eslint(codeSnippet);
+        codeSnippet = this._makeThreeDotLinesIntoComments(codeSnippet);
         codeSnippet = this._encode(codeSnippet);
         return codeSnippet;
     }

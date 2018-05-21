@@ -57,9 +57,15 @@ describe('Code Formatter', () => {
         expect(formatter.format(s)).to.equal(s);
     });
 
-    it('ellipsis inside quoted string', () => {
+    it('ellipsis inside quoted string - single quote', () => {
         let s = "doSomething('...')";
         expect(formatter.format(s)).to.equal(s);
+    });
+
+    it('ellipsis inside quoted string - double quote', () => {
+        let before = 'doSomething("...")';
+        let after = "doSomething('...')";
+        expect(formatter.format(before)).to.equal(after);
     });
 
     it('ellipsis inside function - inline', () => {

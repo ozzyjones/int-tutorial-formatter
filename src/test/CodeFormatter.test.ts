@@ -65,17 +65,13 @@ describe('Code Formatter', () => {
     });
 
     it('ellipsis inside function - inline', () => {
-        const before = 'var callback = function(){...}';
-        const after = 
-        'var callback = function (){\n' + 
-        '    // ...\n' + 
-        '}';
-        expect(formatter.format(before)).to.equal(after);
+        const s = 'var callback = function (){...}';
+        expect(formatter.format(s)).to.equal(s);
     });
 
     it('ellipsis inside function - multiline', () => {
         const before = 
-        'var callback = function () {\n' + 
+        'var callback = function (){\n' + 
         '    ...\n' + 
         '}';
         const after = 

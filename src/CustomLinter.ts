@@ -43,7 +43,9 @@ export class CustomLinter {
         // Code-Base Rules
         const codeBaseRules = linter.verifyAndFix(codeSnippet, {
             'rules': {
-                'brace-style': [2, '1tbs', { 'allowSingleLine': false }],
+                'brace-style': [2, '1tbs', {
+                    'allowSingleLine': true     // <== Change to 'true'
+                }],
                 'comma-dangle': [2, 'never'],
                 'comma-spacing': [2, {'before': false, 'after': true}],
                 'dot-location': [2, 'property'],

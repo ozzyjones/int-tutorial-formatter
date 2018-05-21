@@ -43,6 +43,7 @@ export class CodeFormatter {
     private _beautifyJavascript(uglyCodeSnippet: string): string {
         const prettyCodeSnippet = beautify(uglyCodeSnippet, {
             // 'break_chained_methods': true,
+            'brace_style': 'collapse,preserve-inline',
             'jslint_happy': true,
             'wrap_line_length': 110
         });

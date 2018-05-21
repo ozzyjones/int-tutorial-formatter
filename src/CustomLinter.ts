@@ -130,8 +130,17 @@ export class CustomLinter {
             const p = '(' + pre + contents + post + ')';
             return p;
         });
-        const ELLIP_PARAM_REGEX_CURLY = /({[\s]*)\.{3}([\s]*})/g;   // { ... }
+
+        // A regex to replace params with curly braces - e.g. { ... }
+        const ELLIP_PARAM_REGEX_CURLY = /({[\s]*)\.{3}([\s]*})/g;
         codeSnippet = codeSnippet.replace(ELLIP_PARAM_REGEX_CURLY, `{${this.HELLIP}: ${this.HELLIP}}`);
+
+        // A regex to replace all ellipses, everywhere
+        const ELLIP_REGEX = /([^'"])\.{3}([^'"])/g;
+        codeSnippet = codeSnippet.replace(ELLIP_REGEX, (match, predots, postdots) => {
+            return predots + this.HELLIP + postdots;
+        });
+
         return codeSnippet;
     }
 

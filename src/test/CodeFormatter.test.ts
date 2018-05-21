@@ -43,10 +43,6 @@ describe('Code Formatter', () => {
         expect(formatter.format('...')).to.equal('// ...');
     });
 
-    it('ellipsis into comment', () => {
-        expect(formatter.format('...')).to.equal('// ...');
-    });
-
     it('ellipsis as parameter', () => {
         let s = 'doSomething(...);';
         expect(formatter.format(s)).to.equal(s);

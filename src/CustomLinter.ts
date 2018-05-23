@@ -85,7 +85,7 @@ export class CustomLinter {
                 'func-call-spacing': ['error', 'never'],
                 'newline-per-chained-call': ['error', {'ignoreChainWithDepth': 1}],
                 'no-floating-decimal': 'error',
-                'no-lonely-if': 'error',
+                // 'no-lonely-if': 'error',
                 'no-multi-spaces': ['error', {'ignoreEOLComments': true}],
                 'no-multiple-empty-lines': ['error', {'max': 1}],
                 'no-trailing-spaces': ['error', {'ignoreComments': true}],

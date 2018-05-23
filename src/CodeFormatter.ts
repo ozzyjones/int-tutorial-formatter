@@ -45,7 +45,7 @@ export class CodeFormatter {
             // 'break_chained_methods': true,
             'brace_style': 'collapse,preserve-inline',
             'jslint_happy': true,
-            'wrap_line_length': 110
+            'wrap_line_length': 100
         });
         return prettyCodeSnippet;
     }

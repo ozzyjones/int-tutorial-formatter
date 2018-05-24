@@ -14,19 +14,20 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.debug.activeDebugConsole.appendLine('');
 
     const formatCodeDisposable = vscode.commands.registerCommand('extension.formatCode', () => {
-        formatTutorial('code');     // Code Only
+        const activeEditor = vscode.window.activeTextEditor;
+        formatTutorial('code', activeEditor);     // Code Only
     });
 
     const formatTutorialsDisposable = vscode.commands.registerCommand('extension.formatTutorials', () => {
-        formatTutorial('all');      // Code and all other attributes
+        const activeEditor = vscode.window.activeTextEditor;
+        formatTutorial('all', activeEditor);      // Code and all other attributes
     });
 
-    function formatTutorial(option: string): void {
-        const activeEditor = vscode.window.activeTextEditor;
-        if (activeEditor !== undefined) {
-            const document = activeEditor.document;
+    function formatTutorial(option: string, editor: vscode.TextEditor): void {
+        if (editor !== undefined) {
+            const document = editor.document;
             const formatter = new TutorialFormatter();
-            const text = activeEditor.document.getText();
+            const text = editor.document.getText();
 
             let previousReformatting;
             let latestReformatting = text.slice();
@@ -57,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
             }
 
             // Replace all text in the active editor with the reformatted text
-            activeEditor.edit((builder) => {
+            editor.edit((builder) => {
                 builder.replace(
                     new vscode.Range(
                         document.positionAt(0),

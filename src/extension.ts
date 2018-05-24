@@ -14,13 +14,15 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.debug.activeDebugConsole.appendLine('');
 
     const formatCodeDisposable = vscode.commands.registerCommand('extension.formatCode', () => {
-        const activeEditor = vscode.window.activeTextEditor;
-        formatTutorial('code', activeEditor);     // Code Only
+        vscode.window.visibleTextEditors.forEach((editor) => {
+            formatTutorial('code', editor);     // Code Only
+        });
     });
 
     const formatTutorialsDisposable = vscode.commands.registerCommand('extension.formatTutorials', () => {
-        const activeEditor = vscode.window.activeTextEditor;
-        formatTutorial('all', activeEditor);      // Code and all other attributes
+        vscode.window.visibleTextEditors.forEach((editor) => {
+            formatTutorial('all', editor);      // Code and all other attributes
+        });
     });
 
     function formatTutorial(option: string, editor: vscode.TextEditor): void {

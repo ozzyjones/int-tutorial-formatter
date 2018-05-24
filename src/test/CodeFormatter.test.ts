@@ -80,4 +80,11 @@ describe('Code Formatter', () => {
         '}';
         expect(formatter.format(before)).to.equal(after);
     });
+
+    it('throw eslint JS parsing error', () => {
+        const s = 'var a === "abc"';    // Improper assignment
+        expect(function(){
+            formatter.format(s);
+        }).to.throw('ESLint Error');
+    });
 });
